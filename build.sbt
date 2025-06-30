@@ -71,8 +71,8 @@ lazy val commonSettings = Seq(
 )
 
 // Compilation
-ThisBuild / scalaVersion := scala213Version
-ThisBuild / crossScalaVersions := Seq(scala212Version, scala213Version, scala30Version)
+ThisBuild / scalaVersion := scala30Version
+ThisBuild / crossScalaVersions := Seq(scala213Version, scala30Version)
 ThisBuild / githubWorkflowScalaVersions := Seq("2.12", "2.13", "3")
 
 lazy val root = tlCrossRootProject.aggregate(
@@ -98,7 +98,7 @@ lazy val root = tlCrossRootProject.aggregate(
   examples
 )
 
-lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+lazy val core = crossProject( /*JSPlatform*/ JVMPlatform /*, NativePlatform*/ )
   .in(file("modules/core"))
   .enablePlugins(AutomateHeaderPlugin)
   .settings(commonSettings)
@@ -114,11 +114,11 @@ lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "org.scala-lang.modules" %%% "scala-collection-compat" % collectionCompatVersion
     )
   )
-  .nativeSettings(
-    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.1.7").toMap
-  )
+//  .nativeSettings(
+//    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.1.7").toMap
+//  )
 
-lazy val coreTests = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+lazy val coreTests = crossProject( /*JSPlatform*/ JVMPlatform /*, NativePlatform*/ )
   .in(file("modules/core-tests"))
   .dependsOn(core, mtl, testkit)
   .enablePlugins(AutomateHeaderPlugin, NoPublishPlugin)
@@ -250,7 +250,7 @@ lazy val datadog = project
     )
   )
 
-lazy val log = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+lazy val log = crossProject( /*JSPlatform*/ JVMPlatform /*, NativePlatform*/ )
   .in(file("modules/log"))
   .dependsOn(core)
   .enablePlugins(AutomateHeaderPlugin)
@@ -264,9 +264,9 @@ lazy val log = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "io.github.cquiroz" %%% "scala-java-time" % "2.5.0" % Test
     )
   )
-  .nativeSettings(
-    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.1.7").toMap
-  )
+//  .nativeSettings(
+//    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.1.7").toMap
+//  )
 
 lazy val newrelic = project
   .in(file("modules/newrelic"))
@@ -284,7 +284,7 @@ lazy val newrelic = project
     )
   )
 
-lazy val mtl = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+lazy val mtl = crossProject( /*JSPlatform*/ JVMPlatform /*, NativePlatform*/ )
   .in(file("modules/mtl"))
   .dependsOn(core)
   .enablePlugins(AutomateHeaderPlugin)
@@ -299,11 +299,11 @@ lazy val mtl = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "org.typelevel" %%% "cats-effect-testkit" % "3.6.1" % Test
     )
   )
-  .nativeSettings(
-    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.1.7").toMap
-  )
+//  .nativeSettings(
+//    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.1.7").toMap
+//  )
 
-lazy val noop = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+lazy val noop = crossProject( /*JSPlatform*/ JVMPlatform /*, NativePlatform*/ )
   .in(file("modules/noop"))
   .dependsOn(core)
   .enablePlugins(AutomateHeaderPlugin)
@@ -313,11 +313,11 @@ lazy val noop = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     description := "No-Op Open Tracing implementation",
     libraryDependencies ++= Seq()
   )
-  .nativeSettings(
-    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.1.7").toMap
-  )
+//  .nativeSettings(
+//    tlVersionIntroduced := List("2.12", "2.13", "3").map(_ -> "0.1.7").toMap
+//  )
 
-lazy val xray = crossProject(JSPlatform, JVMPlatform)
+lazy val xray = crossProject( /*JSPlatform*/ JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("modules/xray"))
   .dependsOn(core)
@@ -332,9 +332,9 @@ lazy val xray = crossProject(JSPlatform, JVMPlatform)
       "com.comcast" %%% "ip4s-core" % "3.7.0"
     )
   )
-  .jsSettings(
-    scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule))
-  )
+//  .jsSettings(
+//    scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule))
+//  )
   .settings(
     mimaBinaryIssueFilters ++= Seq(
       ProblemFilters.exclude[DirectMissingMethodProblem]("natchez.xray.XRayEnvironment.env"),
@@ -395,7 +395,7 @@ lazy val logOdin = project
     )
   )
 
-lazy val testkit = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+lazy val testkit = crossProject( /*JSPlatform*/ JVMPlatform /*, NativePlatform*/ )
   .in(file("modules/testkit"))
   .dependsOn(core)
   .enablePlugins(AutomateHeaderPlugin)
